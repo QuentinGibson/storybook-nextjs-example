@@ -1,9 +1,11 @@
-import type { Preview } from "@storybook/react";
-import Layout from "../app/layout";
-import React from "react";
+import type { Preview, ReactRenderer } from "@storybook/react";
+import { withThemeByDataAttribute } from "@storybook/addon-themes";
+
+import "../app/globals.css";
 
 const preview: Preview = {
   parameters: {
+    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -12,11 +14,14 @@ const preview: Preview = {
     },
   },
   decorators: [
-    (Story) => (
-      <Layout>
-        <Story />
-      </Layout>
-    ),
+    withThemeByDataAttribute<ReactRenderer>({
+      themes: {
+        light: "light",
+        dark: "dark",
+      },
+      defaultTheme: "light",
+      attributeName: "data-theme",
+    }),
   ],
 };
 
